@@ -1,5 +1,3 @@
-
-
 import random
 from datetime import datetime
 
@@ -85,8 +83,11 @@ class User(Account):
         if self.transfer_permission:
             if amount > 0:
                 if self.balance >= amount:
-                    receiver = next((acc for acc in Account.accounts if isinstance(
-                        acc, User) and acc.account_number == account_no), None)
+                    receiver = None
+                    for acc in Account.accounts:
+                        if isinstance(acc, User) and acc.account_number == account_no:
+                            receiver = acc
+                            break
                     if receiver:
                         receiver.deposit(amount)
                         self.balance -= amount
@@ -273,6 +274,7 @@ while True:
             print("\t7. Turn off transfer feature")
             print("\t8. Bankrupt ")
             print("\t9. Logout")
+            # admin = Admin("admin", "admin@gmail.com", "kasimpur")
             op = int(input("\n\tChoose an option : "))
             if op == 1:
                 name = input("\n\tName : ")
